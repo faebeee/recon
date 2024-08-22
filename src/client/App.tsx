@@ -6,12 +6,12 @@ import {addEdge, ReactFlow, useEdgesState, useNodesState} from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import {v4} from "uuid";
 import {ImageNode} from "./nodes/image-node";
-import {useMount, useMountedState} from "react-use";
+import {useMount} from "react-use";
 
 // const store = new Store();
 
 export const App = () => {
-  const [nodeToAdd, setNodeToAdd] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const nodeTypes = useMemo(() => ({image: ImageNode}), []);
@@ -31,7 +31,12 @@ export const App = () => {
     [setEdges],
   );
   const addNode = () => {
-    setNodes([...nodes, {id: v4(), position: {x: 0, y: 0}, data: {label: nodeToAdd}, type: 'image',}])
+    setNodes([...nodes, {id: v4(), position: {x: 0, y: 0}, data: {url: imageUrl}, type: 'image',}])
+  }
+
+  const onClearClicked = () => {
+    window.backendApi.saveNodes([]);
+    window.backendApi.saveEdges([]);
   }
 
   return <div className={classes.root}>
@@ -47,9 +52,10 @@ export const App = () => {
       />
     </div>
     <div>
-      <input onChange={e => setNodeToAdd(e.target.value)} type={'text'}/>
+      <input onChange={e => setImageUrl(e.target.value)} type={'text'}/>
       <button onClick={addNode}>Add</button>
       <button onClick={onSaveClicked}>Save</button>
+      <button onClick={onClearClicked}>Clear</button>
     </div>
   </div>
 }

@@ -5,7 +5,7 @@ export class SimpleElectronStore {
   private data: Record<string, any>;
   private filePath: string;
 
-  constructor(fileName: string = 'store.json') {
+  constructor(fileName: string = './store/store.json') {
     const userDataPath = path.resolve('.'); // or app.getPath('userData')
     this.filePath = path.join(userDataPath, fileName);
 
